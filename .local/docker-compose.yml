@@ -1,0 +1,35 @@
+services:
+
+  vault:
+    image: hashicorp/vault
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: secret
+    ports:
+      - "8200:8200"
+
+  traefik:
+    image: traefik
+    volumes:
+      - ./traefik:/etc/traefik:ro
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+  jeager:
+    image: jaegertracing/jaeger
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+      - "5778:5778"
+      - "9411:9411"
+
+  backend:
+    build:
+      context: ../backend
+
+  frontend:
+    build:
+      context: ../frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html/data:ro

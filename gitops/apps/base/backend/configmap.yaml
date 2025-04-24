@@ -1,0 +1,8 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: backend
+  labels:
+    app: backend
+literals:
+  - GIN_MODE=release

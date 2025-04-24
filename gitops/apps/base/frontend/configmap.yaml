@@ -1,0 +1,8 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+literals:
+  - config.json={"api":"http://localhost:80/api"}
