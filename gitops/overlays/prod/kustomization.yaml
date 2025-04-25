@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base
+namePrefix: prod-
+labels:
+  - pairs:
+      env: prod
+    includeSelectors: true
+replicas:
+  - name: backend
+    count: 3
+  - name: frontend
+    count: 2
+patches:
+  - target:
+      kind: Middleware
+      name: backend
+    patch: |-
+      - op: replace
+        path: /spec/stripPrefix/prefixes/0
+        value: /prod-backend
+  - target:
+      kind: IngressRoute
+      name: backend
+    patch: |-
+      - op: replace
+        path: /spec/routes/0/match
+        value: Host(`localhost`) && PathPrefix(`/prod-backend/`)
+      - op: replace
+        path: /spec/routes/0/middlewares/0/name
+        value: prod-backend
+      - op: replace
+        path: /spec/routes/0/services/0/name
+        value: prod-backend
+  - target:
+      kind: Middleware
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/stripPrefix/prefixes/0
+        value: /prod-frontend
+  - target:
+      kind: IngressRoute
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/routes/0/match
+        value: Host(`localhost`) && PathPrefix(`/prod-frontend/`)
+      - op: replace
+        path: /spec/routes/0/middlewares/0/name
+        value: prod-frontend
+      - op: replace
+        path: /spec/routes/0/services/0/name
+        value: prod-frontend
