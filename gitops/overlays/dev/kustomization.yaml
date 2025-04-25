@@ -9,42 +9,27 @@ labels:
     includeSelectors: true
 patches:
   - target:
-      kind: Middleware
+      kind: HelmRelease
       name: backend
     patch: |-
-      - op: replace
-        path: /spec/stripPrefix/prefixes/0
-        value: /dev-backend
+      - op: add
+        path: /spec/values
+        value:
+          env: dev
+          app: backend
   - target:
-      kind: IngressRoute
-      name: backend
+      kind: HelmRelease
+      name: frontend
     patch: |-
-      - op: replace
-        path: /spec/routes/0/match
-        value: Host(`localhost`) && PathPrefix(`/dev-backend/`)
-      - op: replace
-        path: /spec/routes/0/middlewares/0/name
-        value: dev-backend
-      - op: replace
-        path: /spec/routes/0/services/0/name
-        value: dev-backend
+      - op: add
+        path: /spec/values
+        value:
+          env: dev
+          app: frontend
   - target:
-      kind: Middleware
+      kind: ConfigMap
       name: frontend
     patch: |-
       - op: replace
-        path: /spec/stripPrefix/prefixes/0
-        value: /dev-frontend
-  - target:
-      kind: IngressRoute
-      name: frontend
-    patch: |-
-      - op: replace
-        path: /spec/routes/0/match
-        value: Host(`localhost`) && PathPrefix(`/dev-frontend/`)
-      - op: replace
-        path: /spec/routes/0/middlewares/0/name
-        value: dev-frontend
-      - op: replace
-        path: /spec/routes/0/services/0/name
-        value: dev-frontend
+        path: /data/config.json
+        value: '{"api":"http://localhost:8080/dev-backend"}'

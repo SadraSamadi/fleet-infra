@@ -8,7 +8,7 @@ spec:
     spec:
       interval: 10m
       chart: ./gitops/charts/external-service
-      version: "1.x.x"
+      version: "1.*.*"
       sourceRef:
         kind: GitRepository
         namespace: flux-system
