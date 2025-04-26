@@ -7,7 +7,7 @@ spec:
   interval: 10m
   url: https://github.com/SadraSamadi/fleet-infra
   ref:
-    branch: main
+    branch: shared
   ignore: |
     /*
     !/gitops/charts/
