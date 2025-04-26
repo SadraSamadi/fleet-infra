@@ -4,7 +4,6 @@ metadata:
   name: traefik
 spec:
   interval: 10m
-  timeout: 5m
   chart:
     spec:
       interval: 1h

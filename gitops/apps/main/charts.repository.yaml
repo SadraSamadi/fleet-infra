@@ -1,10 +1,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: fleet-infra
+  name: shuttle
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 10m
   url: https://github.com/SadraSamadi/fleet-infra
   ref:
     branch: main
