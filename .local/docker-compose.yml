@@ -1,5 +1,14 @@
 services:
 
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+
   vault:
     image: hashicorp/vault
     environment:
@@ -13,16 +22,7 @@ services:
       - ./traefik:/etc/traefik:ro
     ports:
       - "80:80"
-      - "8080:8080"
-
-  jeager:
-    image: jaegertracing/jaeger
-    ports:
-      - "16686:16686"
-      - "4317:4317"
-      - "4318:4318"
-      - "5778:5778"
-      - "9411:9411"
+      - "1080:8080"
 
   backend:
     build:
